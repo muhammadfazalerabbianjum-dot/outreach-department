@@ -1,0 +1,39 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+dist/
+build/
+*.egg-info/
+.venv/
+venv/
+
+# local machine state — never committed
+.env
+*.db
+*.db-wal
+*.db-shm
+# ADR-13: dedicated Outreach Chromium profile (owner login state) — never commit
+.chrome/
+.chrome-owner/
+.opencode/
+skill-observations/
+
+# archived drifted build (on disk for audit; not part of the product)
+_archive_prev_build/
+
+# engine runtime state (watchdog/heartbeat) — local only
+.heartbeat.json
+.engine_lease.json
+# the profile probe lock (ADR-13). A suite killed mid-probe leaves this file
+# behind; it expired and is ignored rather than tracked as debris (2026-11-14)
+.browser_probe.lock
+
+# engine runtime trace (written by watchdog.spawn_engine, rotated at 5 MB)
+logs/
+
+# The owner's live queue is regenerated on demand and lists real vendors with
+# their phone numbers. Untracked 2026-11-21; never stage it again.
+OWNER_REVIEW.md

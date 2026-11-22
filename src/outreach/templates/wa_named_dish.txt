@@ -1,0 +1,10 @@
+Hey {{name}},
+
+Quick note from a local content team! We're planning features on the best
+independent restaurants in town, and we'd love to create a short video
+featuring {{dish}} for your page...free of charge.
+
+Would you be open to it?
+
+Cheers,
+[signature pending owner paste]

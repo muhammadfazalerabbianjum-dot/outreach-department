@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "outreach"
+version = "0.1.0"
+description = "Outreach Department: deterministic WA/IG/Email outreach queue + state machine"
+requires-python = ">=3.10"
+# Playwright drives the real WhatsApp/Instagram surfaces; every other dependency
+# is stdlib by ADR-1.
+dependencies = ["playwright>=1.40"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov>=5"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# The frozen copy files ARE the product (ADR-6): a wheel that omits them
+# installs a package whose every render raises MessageHold.
+[tool.setuptools.package-data]
+outreach = ["templates/*.txt"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "tests"]
+testpaths = ["tests"]
+addopts = "-q --cov=outreach --cov-report=term-missing --cov-fail-under=80"
+
+[tool.coverage.run]
+source = ["outreach"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

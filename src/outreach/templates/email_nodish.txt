@@ -1,0 +1,6 @@
+Salam {{name}},
+Saw {{restaurant}} on {{platform}}...{{rating}} stars from {{reviews}} reviews is genuinely hard to earn.
+Quick one: I build custom ordering apps for restaurants. No commission on orders, and every customer's data stays yours, not the platform's. I mocked up what your own app could look like...attached.
+If delivery fees and ad spend are a pain point, I'll run your real numbers with you, 20 minutes. If the math doesn't work, I'll say so myself.
+Faz from Carnama Labs
+labs.carnama.online

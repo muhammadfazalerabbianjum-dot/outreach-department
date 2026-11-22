@@ -1,0 +1,1 @@
+Just so it's not lost in the scroll...I mocked up {{restaurant}}'s own app, and the math on your delivery fees is the part most owners want to see. Both are ready whenever you are, and if the timing's just wrong, no problem at all.

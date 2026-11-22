@@ -1,0 +1,3 @@
+Salam! {{restaurant}}'s {{rating}} stars from {{reviews}} reviews caught my eye. That kind of rating isn't luck, MashaAllah. What's the dish that earns it...the one your regulars always order?
+
+P.S. full transparency, I build ordering apps for restaurants, so I keep an eye on places like this. Genuinely curious about the food first 😄
