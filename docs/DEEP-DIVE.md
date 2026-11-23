@@ -49,7 +49,7 @@ claim loop that refuses to claim anything it cannot lawfully send.
 
 The three refusals define the project more than the features do:
 
-- **Not a scraper.** Scraping lives in a separate project (`A:\scraper`) which this
+- **Not a scraper.** Scraping lives in a separate project (the scraper repo) which this
   system treats as read-only, per ADR-3. The only arrow is
   `python -m outreach.sync`.
 - **Not a CRM.** There is no pipeline board, no deal stage, no per-contact history
@@ -79,7 +79,7 @@ refuse the model's answer.
 ## 2. The shape of the machine
 
 ```
-A:\scraper (read-only)
+scraper DB (read-only)
      │  python -m outreach.sync
      ▼
   intake ──► cleaning ──► icp (AI #1) ──► routing ──► dispatcher
@@ -138,7 +138,7 @@ grouping is documentation, not packaging — the code has no sub-packages on pur
 
 | Module | Role |
 |---|---|
-| `sync.py` | The only arrow out of `A:\scraper`. Read-only adapter over the scraper DB. |
+| `sync.py` | The only arrow out of the scraper project. Read-only adapter over the scraper DB. |
 | `scraper_adapter.py`, `scraper_labels.py` | Field mapping and label normalisation for scraper rows. |
 | `intake.py` | Row → lead, dedupe (`place_id` → normalised phone → fuzzy name+city), run provenance. |
 | `importer.py` | Bulk import path (including the contacted-elsewhere signal). |
@@ -627,7 +627,7 @@ scraper's current rows and the gate's vocabulary has changed since.
 
 ## 10. The scraper contract
 
-`A:\scraper` is read-only (ADR-3). Two files pair with the department:
+The scraper DB is read-only (ADR-3). Two files pair with the department:
 
 ### `SUPPLY_COUNTDOWN.{md,json}` — how much is left
 

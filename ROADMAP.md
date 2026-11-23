@@ -11,7 +11,7 @@ Status values: `OPEN`, `IN PROGRESS`, `BLOCKED-OWNER`, `DONE`.
 - Owner copy is byte-pinned (`PINNED_SHA256`); the wall vetoes, never edits.
 - WA paused by owner directive; email disarmed (ADR-5). Only `ig1` may send.
 - ig2–ig4 are `WARMING`: week 1 = engagement only, zero DMs.
-- `A:\scraper` is read-only (ADR-3). The only legal arrow is `python -m outreach.sync`.
+- The scraper DB is read-only (ADR-3). The only legal arrow is `python -m outreach.sync`.
 - Explicit `git add` only, never `-A`. `OWNER_REVIEW.md` is never staged; `AGENTS.md` only when the change
   is the manual.
 - One engine, leased; heartbeat + watchdog.
@@ -425,7 +425,7 @@ activity to the same window.
 
 Full design, laws, acceptance criteria and build order: **`OVERHAUL_PLAN_2026-11-13.md`**. Scraper half
 (popular times, attributes, follower counts, hours, timezone): **`SCRAPER_PROMPT_2026-11-13.md`** — that one is
-to be pasted into `A:\scraper`, not built here.
+to be pasted into the scraper repo, not built here.
 
 Measured starting point (2026-11-13T14:4xZ): `engagement.py`, `warming.py`, `warmup.py` and `comments.py`
 are built and tested but **have no caller in `src/`**, and `config.warmup_config` / `warming_config` /

@@ -2,7 +2,7 @@
 
 Everything here is a command you can run and a result you can check. No step depends on memory.
 
-Working directory for all engine commands: `A:\outreach-department\src`
+Working directory for all engine commands: the repo's `src` directory
 Python: `PYTHONPATH=src` from the repo root for tools; the engine boot uses the package directly.
 
 ---
@@ -15,7 +15,7 @@ cat ../.engine_lease.json      # {"pid": N, "started_at": "..."}
 cat ../.heartbeat.json         # stamped_at, next_wake_at, stage
 
 # start (single instance only - the lease refuses a second engine)
-cd A:/outreach-department/src && pythonw -m outreach.engine_loop
+cd <repo>/src && pythonw -m outreach.engine_loop
 
 # stop (ONLY the leased pid; never kill by name - the agent's own command line
 # contains the same words and a pattern kill can take out the cleanup shell)
@@ -36,7 +36,7 @@ window is normal; do not treat it as death.
 ## 2. What is live right now
 
 ```bash
-cd A:/outreach-department && python - <<'PY'
+cd <repo> && python - <<'PY'
 import sqlite3, json
 db = sqlite3.connect("file:outreach.db?mode=ro", uri=True); db.row_factory = sqlite3.Row
 print(dict(db.execute("SELECT state, COUNT(*) FROM leads GROUP BY state")))
@@ -95,7 +95,7 @@ passes for the wrong reason is a defect, not a win.
 
 ```bash
 # last day of digest, newest first
-cd A:/outreach-department && python -c "
+cd <repo> && python -c "
 import sqlite3; db=sqlite3.connect('file:outreach.db?mode=ro',uri=True)
 [print(r[0][:19], r[1][:120].replace(chr(10),' ')) for r in
  db.execute('SELECT created_at, body FROM digest WHERE created_at >= datetime(\"now\",\"-1 day\") ORDER BY id DESC LIMIT 30')]"
@@ -419,7 +419,9 @@ PYTHONPATH=src python -m outreach.setup_startup --remove    # stop booting at lo
 
 ## 9. Commit discipline
 
-Explicit paths only, never `git add -A`. Never stage `AGENTS.md` or `OWNER_REVIEW.md` (owner's files).
+Explicit paths only, never `git add -A`. `OWNER_REVIEW.md` is the owner's live queue and is never staged:
+the engine rewrites it every tick, so staging it commits a snapshot, not a decision. `AGENTS.md` is tracked
+here (this repo is the reference copy); stage it only when the change *is* the manual, named in the commit.
 Commit message says why, not what. Reports and contracts are owner-facing artefacts and belong in the repo.
 
 ## 11. The refresh schedule (R2, 2026-11-13)
@@ -446,6 +448,26 @@ with Database('outreach.db') as db: print(refresh_due(db, datetime.now(timezone.
 - **Alarms:** `STAGE OVERRUN [stage] Ns > Ns budget` in the digest means one tick stage passed its bound
   (`scheduler._STAGE_BUDGET_S`); it is a measurement, not a cutoff. The refresh pass is the only hard stop.
 - **Consequence of a PC that sleeps through the night:** the refresh waits for the next off-window night.
+
+## 12. Machine paths (the `OUTREACH_*` overrides)
+
+The engine's local layout is a **default, not a constant**: five settings read an environment variable first
+and fall back to the layout this lane was tuned on. Nothing here changes behaviour while the variables are
+unset — that is the point: a machine that works keeps working, and a copy of this tree is not welded to one
+disk layout.
+
+| Variable | What it points at | Read by |
+|---|---|---|
+| `OUTREACH_SCRAPER_ROOT` | the read-only scraper checkout (its `cache/scraper_cache.db` is the SSOT) | `scraper_adapter`, `intake` |
+| `OUTREACH_LEG_PYTHON` | the interpreter a spawned scraper leg runs under | `intake` |
+| `OUTREACH_LEG_LOG_DIR` | where a spawned leg writes `leg_<ts>.log` | `intake` |
+| `OUTREACH_RETIREMENT_STATE` | the retired reminder's `state.json` (read-only archive) | `retirement` |
+| `OUTREACH_LINKEDIN_MOUNT` | the mounted poster sibling — presence check only, never imported | `retirement` |
+
+Set them in the process environment before the engine boots. **Unset = the defaults in source.** Never move a
+path by editing a literal: set the variable, or the next copy of this tree silently inherits this machine's
+drive letters. `OUTREACH_LEG_PYTHON` and `OUTREACH_LEG_LOG_DIR` default to paths *inside*
+`OUTREACH_SCRAPER_ROOT`, so overriding the root moves the whole leg invocation with it.
 
 ## 10. When something is unknown
 

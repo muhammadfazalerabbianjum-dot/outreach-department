@@ -271,7 +271,7 @@ honest, because a self-reply was counting as a reply.
 ## IL-14 — one unlogged browser profile stopped the whole engagement stage (found 2026-11-15)
 
 **What the owner would have seen.** `ENGAGE ERROR: ProfileMissing("profile 'Outreach-ig4' is not on disk at
-A:\outreach-department\...")` every cycle from 08:05Z, and no comment, follow or warm-up from any account for
+...")` every cycle from 08:05Z, and no comment, follow or warm-up from any account for
 that time — including `ig1`, whose profile is fine and which is the only account with work to do.
 
 **Cause (measured).** `ig4` is registered in `accounts` (WARMING, seeded 2026-11-04) but has never been logged

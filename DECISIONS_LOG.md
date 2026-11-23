@@ -69,7 +69,7 @@ Status: `STANDING` (must not be broken), `SUPERSEDED`, `RESOLVED` (debt closed).
 | 11-05 | No em dash in lead-facing copy, enforced mechanically (refuse, never rewrite) | `variants.lint` |
 | 11-05 | Two follow-ups, and the probe asks the ladder before a rung fires | `followups`, `replies.probe_fresh` |
 | 11-04 | Junk identity is one rule, asked at intake, judgement and claim | `cleaning.junk_identity_reason` |
-| 11-03 | Scraper contamination hold: quarantine, never guess; `A:\scraper` is read-only (ADR-3) | `cleanings`, `sync` |
+| 11-03 | Scraper contamination hold: quarantine, never guess; the scraper repo is read-only (ADR-3) | `cleanings`, `sync` |
 | 10-27 | Browser channel is `chromium` with `--profile-directory` (proven by cookie comparison) | `browser.py` |
 | 10-26 | One first touch per lead; the ladder owns everything after | `dispatcher`, `followups` |
 

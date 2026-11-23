@@ -310,8 +310,8 @@ must still REPORT its failure instead of crashing inside the reporter.
 Evidence: reproduced the UnicodeEncodeError, fixed, gate runs to RED/GREEN
 verdict on any console. Grade: OPTIMAL (reporter robustness in scope).
 
-## B12·live · SMTP creds sourced from A:\scraper (owner-directed) + 465 = SSL
-Decision: owner was too busy to fetch creds and pointed at A:\scraper's
+## B12·live · SMTP creds sourced from the scraper repo (owner-directed) + 465 = SSL
+Decision: owner was too busy to fetch creds and pointed at the scraper repo's
 Hostinger block; only names were echoed to chat, values copied straight
 into OUR `.env` (SMTP smtp.hostinger.com:465 per owner's ManyReach usage;
 IMAP wired for B13 reply detection; EMAIL_ENABLED=1). The live run caught
@@ -435,11 +435,11 @@ database shows "cap": null + used 0 so the owner sees the REAL state
 Evidence: cold-DB live status run + unit test.
 Grade: OPTIMAL.
 
-## B17 Ã¢ Retired import = one fingerprinted digest row, never touching A:\outreach
+## B17 Ã¢ Retired import = one fingerprinted digest row, never touching the retired reminder app
 Decision: the fired slot history lands as ONE digest summary row (not
 per-slot spam), fingerprinted via sha256 in config; same file never
 imports twice; changed file logs its changed history; empty = noop.
-A:\outreach stays byte-identical UNSAFE-behavior-wise (read-only oath).
+The retired reminder app stays byte-identical UNSAFE-behavior-wise (read-only oath).
 Evidence: import test suite + real read of the 7 fired entries; gate
 100.00%.
 Alternatives: a dedicated fired-slots table (nothing downstream needs
@@ -540,7 +540,7 @@ Grade: OPTIMAL.
 
 ## B20 - Chains list is a committed 994-entry snapshot, no runtime scraper import
 Decision: src/outreach/chains.py holds HARDCODED_CHAINS parsed as text from
-A:\scraper\halal_scraper\models.py (generated once, committed). ADR-3 keeps
+the scraper's own `models.py` (generated once, committed). ADR-3 keeps
 the scraper read-only for DATA; importing their code at runtime would couple
 our gate to their source tree and their edits would silently move our
 verdicts. False-positive check run over the fixture corpus BEFORE writing the
@@ -1192,7 +1192,7 @@ Changes (routing/qualification layer only; frozen templates byte-frozen):
   no longer wins any lane. effective_ig_inactive derives inactivity from
   ig_last_posted_date (top-level or social_activity.instagram shape);
   operator ig_inactive=1 wins (ADR-53); a MISSING date keeps pre-B29
-  behaviour (fail-open) until A:\scraper exports dates.
+  behaviour (fail-open) until the scraper exports dates.
 - templates.py (fills only): _ORDERLINE_ACK = owner spec copy with the
   em dash swapped to a comma (standing no-em-dash law), prefixed onto WA
   first touches when order_line; optional {{owner}} fill (MessageHold
@@ -1225,7 +1225,7 @@ supplies the fills, the owner pastes placeholders when ready.
 Grade: OPTIMAL (both locked answers verbatim, frozen bytes untouched,
 cold WA fail-closed, every seam test-backed).
 
-Still open: A:\scraper enrichment gaps (export last_post_date,
+Still open: scraper enrichment gaps (export last_post_date,
 order_line detector, review-text dish miner, owner from review
 responses) + Ottawa/Salalah enrichment re-run + v1.1 multi-account.
 
@@ -1268,7 +1268,7 @@ self-healing on every watchdog respawn; (c) flip stale leads back to
 QUALIFIED and re-run apply_routes — rejected: a wasted state round-trip
 through the machine map for 824 leads.
 
-Open: SCRAPER_CHANGES.md (A:\scraper enrichment, owner-paused) +
+Open: SCRAPER_CHANGES.md (scraper enrichment, owner-paused) +
 Ottawa/Salalah enrichment re-run; v1.1 multi-account; LIVE BLOCKER —
 WhatsApp Web session is login-walled since 09:12Z (owner must re-scan
 the QR on their phone; ADR-8 forbids auto-login), which is why 10-31
@@ -1597,7 +1597,7 @@ skips the row and counts it in `ImportReport.skipped_junk`, `icp` rejects it as
 out (a row that predates both still cannot send). Only whole-token placeholders
 are junk - "Unknown Brewing Co" and "NA Grill" are real businesses and stay.
 
-Alternatives: (a) filter only at the scraper - rejected: A:\scraper is
+Alternatives: (a) filter only at the scraper - rejected: the scraper repo is
 read-only and the pool must be safe regardless of what it emits; (b) count the
 row but refuse it at send - rejected: it still poisons a run target and wastes
 a judgement; (c) reject any lead without an address - rejected: a lead with a
@@ -2264,7 +2264,7 @@ we need to hit personalization, needing dishes basically for each restaurant".
 | leads in `QUALIFIED` (the state `extract_dish` required) | **0** | `leads.state` |
 | send-ready leads (`ROUTED`) | 186 | `leads.state` |
 | reviews in the sender | 6 leads | `leads.data_json` |
-| reviews in the scraper | 429 leads / 2,110 strings | `A:\scraper` cache |
+| reviews in the scraper | 429 leads / 2,110 strings | `scraper` cache |
 | email channel | `email_enabled=0`, `daily_caps.email=0` | `config` |
 | WhatsApp | `wa_paused` (owner directive 2026-11-02) | `config` |
 | queue | `PAUSED` | `config` |
