@@ -194,7 +194,7 @@ leave a stale hash behind). Evidence: 137 passed across `b7_templates`, `b9_disp
 
 ---
 
-## R6 — Inbox triage and acknowledgement · IN PROGRESS (owner action)
+## R6 — Inbox triage and acknowledgement · DONE (2026-11-23, acknowledged)
 
 **Goal.** 14 owner-inbox rows, all unacknowledged; only one (id 14, 2026-11-13T09:43Z) carries a reply body.
 
@@ -202,6 +202,11 @@ leave a stale hash behind). Evidence: 137 passed across `b7_templates`, `b9_disp
 real reply needs an owner read and an acknowledgement so the pipeline can mark the lead conversational.
 
 **Acceptance evidence.** `replies_pending_ack` in `SUPPLY_COUNTDOWN.json` reaching 0 with the reply answered.
+
+**Closed 2026-11-23 (measured).** `owner_inbox` holds **18** rows and every one carries
+`acknowledged_at`; `SUPPLY_COUNTDOWN.json` reports `replies_pending_ack: 0`. Acknowledgement
+is not an answer — the owner still owns every conversation — but the queue no longer advertises
+replies that nobody has seen.
 
 **Dependencies.** Owner time. Nothing in code blocks it.
 

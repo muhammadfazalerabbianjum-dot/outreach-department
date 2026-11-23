@@ -58,9 +58,10 @@ any instant loses nothing: the next process turns the same crank.
 
 ### Queue and state machine
 
-- **A frozen transition map.** Seventeen states, one `ALLOWED` dict (sixteen keys
-  — `NO_REPLY` is a terminal nothing writes any more, kept so old rows stay
-  legal), and an `InvalidTransition` for every edge that does not exist. Only
+- **A frozen transition map.** Seventeen states, one `ALLOWED` dict with twelve
+  keys — `DUP`, `REPLIED`, `WA_DEAD`, `IG_DEAD` and the vestigial `NO_REPLY` are
+  terminal and need no outgoing entry, and are kept only as targets so old rows
+  stay legal — and an `InvalidTransition` for every edge that does not exist. Only
   `ROUTED` is claimable, which is why no lead can be messaged twice by accident.
 - **Append-only history, enforced by the database.** `BEFORE UPDATE` and
   `BEFORE DELETE` triggers abort on `state_history`. A transition and its history
@@ -70,8 +71,8 @@ any instant loses nothing: the next process turns the same crank.
   death. `park_kind` stores the park's class (`lane_law` vs `verdict`) so a repair
   never parses prose.
 - **A revive path.** `router.reroute_stranded` re-decides parked rows under the
-  same pure lane law, so a phone-only park is not a one-way door — 554 lane-law
-  rows were still eligible on 2026-11-21, 536 of them phone-bearing.
+  same pure lane law, so a phone-only park is not a one-way door — 555 lane-law
+  rows were still eligible on 2026-11-23, 537 of them phone-bearing.
 - **Reason discipline.** `REJECTED` and `DUP` refuse to fire without a reason. For
   `REJECTED` (and the three holds) the reason also lands on the row itself, so
   `holds` is not the only place to learn why; `DUP` keeps its reason in history.
@@ -277,8 +278,9 @@ Numbers are from the department's own database and logs, not from a benchmark:
 
 - **Reply probe**: 16 threads in **55–63 s**, from **426.5 s** before the 2026-11-17
   bound (an 8 s state wait per thread, a 200 s pass budget).
-- **Failure split, 2026-11-11 → 11-18 UTC**: 67 `IG REPLY PROBE ERROR` against
-  **58 Instagram sends** — a *read*-surface failure, not a send failure.
+- **Failure split, 2026-11-11 → 11-18 UTC**: 72 `IG REPLY PROBE ERROR` against
+  **58 Instagram sends** — 57 `net::ERR_*`, 14 interrupted by another navigation,
+  1 `ProfileBusy`. A *read*-surface failure, not a send failure.
 - **The shell page**: Instagram serves `articles=0 anchors=0 body_len=763–1085
   login=False dead=False` to an automation profile. That is a frame with no grid,
   not an empty account and not a login wall.

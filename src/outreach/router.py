@@ -95,7 +95,7 @@ _URL_HOST = re.compile(r"https?://([^/]+)", re.IGNORECASE)
 
 
 def _bare_domain(value: str | None) -> str:
-    """'https://www.Urbano.om/menu' -> 'urbano.om'; a bare domain passes."""
+    """'https://www.Example.ca/menu' -> 'example.ca'; a bare domain passes."""
     text = unquote(str(value or "")).strip().lower()
     if not text:
         return ""

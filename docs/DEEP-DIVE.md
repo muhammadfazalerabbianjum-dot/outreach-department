@@ -340,7 +340,7 @@ NEW ──► QUALIFIED ──► ROUTED ──► SENT ──► FOLLOWUP ─�
 | Edge | Why it exists |
 |---|---|
 | `REJECTED → QUALIFIED` | Only through `chain_review.restore_tier_valid_chain_rejects`. The verdict was wrong and the scraped tier was right; no dispatch path can re-qualify a rejected lead on its own. |
-| `UNREACHABLE → ROUTED` | "Unreachable" means *no lawful channel at the moment routing looked*, not *no data*. At the 2026-11-16 audit 842 of 867 parked rows carried a phone and 286 a handle the sanitizer accepts; on 2026-11-21 the pass still saw 554 lane-law rows, 536 phone-bearing, so a later repair or import can make the law reach them. Only `router.reroute_stranded` may use this edge, and only by re-running the lane law. |
+| `UNREACHABLE → ROUTED` | "Unreachable" means *no lawful channel at the moment routing looked*, not *no data*. At the 2026-11-16 audit 842 of 867 parked rows carried a phone and 286 a handle the sanitizer accepts; on 2026-11-23 the pass still saw 555 lane-law rows, 537 phone-bearing, so a later repair or import can make the law reach them. Only `router.reroute_stranded` may use this edge, and only by re-running the lane law. |
 | `COPY_HOLD → ROUTED`, `TRANSPORT_HOLD → ROUTED` | Parks, never verdicts. A poison row cannot be re-claimed in the same tick — or ever — without an explicit repair. |
 | `DEPRIORITIZED → ROUTED` | Same shape: targeting parked it, a repair returns it. |
 | `CHANNEL_BANNED → ROUTED` | A banned Instagram lane does not kill the lead; it re-enters routing where email can take it. |
@@ -731,10 +731,11 @@ opens **no browser at all**. Both laws are pinned in the private suite.
 
 ### What is not proven
 
-No public act has ever run against Instagram: the stage is disarmed and arming is
-owner-only. Selectors (the `og:description` caption, the comment box) are pinned
-against a fake surface, not observed on a live post. That observation is the first
-thing to watch when the owner arms it.
+No public act has ever run against Instagram: the stage is **armed but owner-paused**
+(`engage_enabled` is true and `engage_paused` was set on 2026-11-19 for the industry
+switch), so nothing runs until the owner resumes it. Selectors (the `og:description`
+caption, the comment box) are pinned against a fake surface, not observed on a live
+post. That observation is the first thing to watch when the owner resumes it.
 
 ---
 
@@ -775,11 +776,11 @@ Measured over 2026-11-11 → 2026-11-18 UTC, from the department's own `digest` 
 
 | Class | Count | Reading |
 |---|---|---|
-| `IG REPLY PROBE ERROR` | 67 | 56 `net::ERR_*`, 9 "interrupted by another navigation", 1 `ERR_HTTP_RESPONSE_CODE_FAILURE`, 1 page-closed. |
+| `IG REPLY PROBE ERROR` | 72 | 57 `net::ERR_*` (one of them `ERR_HTTP_RESPONSE_CODE_FAILURE`), 14 "interrupted by another navigation", 1 `ProfileBusy`. |
 | `LintBlocked` | 18 | All on 2026-11-12 and 11-13, ending with the `COPY_HOLD` ruling; the copy lint refusing a render. |
 | `IG SEND ERROR` | 0 | Sends themselves did not fail in the window. |
 
-Sixty-seven probe errors against **58 Instagram sends** in the same week is the
+Seventy-two probe errors against **58 Instagram sends** in the same week is the
 project's most misleading number: it looks like a broken channel. It is not a send
 failure at all — it is the *read* surface failing while the write surface works.
 
@@ -957,7 +958,7 @@ Written to be read before trusting the numbers.
 
 1. **Instagram is half-blind.** Sends work; reads return a shell page
    (`articles=0`, `anchors=0`, body 763–1085 chars) with no login wall and no dead
-   account. Comment targeting on Instagram is therefore unproven, and the 67 probe
+   account. Comment targeting on Instagram is therefore unproven, and the 72 probe
    errors/week are a read-surface symptom, not a send failure.
 2. **Nothing public has run on Instagram.** The engagement stage is disarmed by
    default and its selectors are pinned against fakes. First live arming will be
