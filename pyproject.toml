@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "outreach"
 version = "0.1.0"
-description = "Outreach Department: deterministic WA/IG/Email outreach queue + state machine"
+description = "Outreach Department: a deterministic restaurant outreach queue (Instagram, then email, then WhatsApp) over a SQLite state machine"
 requires-python = ">=3.10"
 # Playwright drives the real WhatsApp/Instagram surfaces; every other dependency
 # is stdlib by ADR-1.
