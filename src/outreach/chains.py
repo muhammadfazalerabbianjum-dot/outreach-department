@@ -1,6 +1,7 @@
 """Chain-name snapshot (B20 multi-location brain).
 
-Source of truth: A:\\scraper\\halal_scraper\\models.py HARDCODED_CHAINS.
+Source of truth: the scraper repo's ``halal_scraper/models.py``
+HARDCODED_CHAINS.
 Read-only snapshot per ADR-3 — the scraper repo is never imported and
 never written; regenerate this file if the scraper's list changes.
 """

@@ -142,8 +142,12 @@ def intake_run(
 
 # D10 invocation, region-matched; only ever spawned when the owner flips
 # `auto_restart_leg` (default FALSE -> alert-only). cwd = the scraper repo.
-_LEG_CWD = "A:/scraper"
-_LEG_PYTHON = "A:/scraper/venv/Scripts/python.exe"
+# Paths default to this machine's layout; override them with the OUTREACH_*
+# variables below, never by editing this file.
+_LEG_CWD = os.environ.get("OUTREACH_SCRAPER_ROOT", "A:/scraper")
+_LEG_PYTHON = os.environ.get(
+    "OUTREACH_LEG_PYTHON", f"{_LEG_CWD}/venv/Scripts/python.exe"
+)
 LEG_COMMANDS: dict[str, tuple[str, ...]] = {
     "na": (_LEG_PYTHON, "-m", "halal_scraper", "--config", "config.yaml", "--auto"),
     "me": (
@@ -151,7 +155,7 @@ LEG_COMMANDS: dict[str, tuple[str, ...]] = {
         "--config", "config_legs/leg_salalah.yaml", "--auto",
     ),
 }
-_LEG_LOG_DIR = "A:/scraper/logs"
+_LEG_LOG_DIR = os.environ.get("OUTREACH_LEG_LOG_DIR", f"{_LEG_CWD}/logs")
 
 
 def _spawn_leg(command: list[str], *, cwd: str | None = None) -> str:

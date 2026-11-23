@@ -8,8 +8,8 @@ counting bug, not luck.
 
 Fixed paths, schema v1, same contract rules as the countdown pair:
 
-    A:\\outreach-department\\DISPATCH_FORECAST.md
-    A:\\outreach-department\\DISPATCH_FORECAST.json
+    <repo>/DISPATCH_FORECAST.md
+    <repo>/DISPATCH_FORECAST.json
 
 Both files come from this module's ONE payload, written on the same tick as
 the countdown and fed with the countdown's measured rate (`countdown.write`

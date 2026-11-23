@@ -531,7 +531,7 @@ def run_engine_tick(
     from outreach.countdown import write_from_tick
 
     # Supply countdown (owner order 2026-11-09): first tick after 00:00 PKT
-    # writes A:\outreach-department\SUPPLY_COUNTDOWN.{md,json}, 23:00 PKT
+    # writes SUPPLY_COUNTDOWN.{md,json} beside outreach.db, 23:00 PKT
     # refreshes it. Fail-soft: a file/DB fault must never park the tick.
     write_from_tick(db, now)
     from outreach.dispatcher import reconcile_window_extensions

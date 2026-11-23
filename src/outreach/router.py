@@ -16,7 +16,7 @@ Automation is unchanged (owner decision 2026-10-31: "same flow we have
 right now"): windows, caps, ladder and probes all stand; only the lane
 law flipped. A 30-day post date derives ig activity automatically
 (`effective_ig_inactive`); the operator's `ig_inactive=1` always wins,
-and a missing date keeps pre-B29 behaviour until the scraper exports it    (A:\\scraper enrichment gap, DECISIONS 2026-10-31).
+and a missing date keeps pre-B29 behaviour until the scraper exports it    (scraper enrichment gap, DECISIONS 2026-10-31).
 
 `apply_routes` moves every QUALIFIED, never-contacted lead through the
 machine: ROUTED (channel stored on the lead) or UNREACHABLE (+history).

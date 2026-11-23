@@ -3,8 +3,8 @@
 Owner order 2026-11-09: third-party scripts and external agents consume this
 file, so the PATH is a contract, not a convenience:
 
-    A:\\outreach-department\\SUPPLY_COUNTDOWN.md      (human)
-    A:\\outreach-department\\SUPPLY_COUNTDOWN.json    (machine, schema v1)
+    <repo>/SUPPLY_COUNTDOWN.md      (human)
+    <repo>/SUPPLY_COUNTDOWN.json    (machine, schema v1)
 
 Both paths live next to `outreach.db`, both are written from ONE payload in one
 pass, so the Markdown and the JSON can never disagree. The JSON key set is

@@ -1,12 +1,13 @@
 """Retirement glue (B17): the old reminder's history, the LinkedIn mount.
 
-- ADR-11: the reminder app at ``A:\\outreach`` is retired-IN — its
-  fired slot history is imported into THIS engine's digest log exactly
+- ADR-11: the retired reminder app (``OUTREACH_RETIREMENT_STATE``) is
+  retired-IN — its fired slot history is imported into THIS engine's
+  digest log exactly
   once per file fingerprint, and its login auto-start is switched off
   (`retire_reminder_app` renames the Startup shortcut); the retiree is
   NEVER written to or deleted.
 - ADR-14: the LinkedIn poster is a mounted sibling
-  (``A:\\AI Stuff\\automation``). This module records the mount point
+  (``OUTREACH_LINKEDIN_MOUNT``). This module records the mount point
   and verifies presence — it NEVER imports, configures, or generates
   LinkedIn content. Any new LinkedIn code here = red batch.
 - Startup registration: an idempotent .cmd in the user's Startup folder
@@ -28,8 +29,14 @@ from outreach.store import get_config, set_config
 if TYPE_CHECKING:
     from outreach.store import Database
 
-RETIREMENT_STATE = Path(r"A:\outreach\state.json")
-LINKEDIN_MOUNT = r"A:\AI Stuff\automation"
+# Defaults = this machine's layout. Both are overridable so a fork can point
+# the retirement glue at its own archive and mount without an edit.
+RETIREMENT_STATE = Path(
+    os.environ.get("OUTREACH_RETIREMENT_STATE", r"A:\outreach\state.json")
+)
+LINKEDIN_MOUNT = os.environ.get(
+    "OUTREACH_LINKEDIN_MOUNT", r"A:\AI Stuff\automation"
+)
 _STARTUP_NAME = "outreach_engine_startup.cmd"
 # R4 (2026-11-13): the launcher is DEFINED HERE, in source control, and the
 # Startup-folder file is a rendered copy of it. Two changes from the B17 form:
@@ -127,8 +134,8 @@ def retire_reminder_app(
     """Switch the retired reminder OFF: disable auto-start, never delete.
 
     ADR-11 endgame: the reminder's history is imported by
-    `import_reminder_history` and its folder (``A:\\outreach``) stays on
-    disk forever as a read-only archive. The one thing retirement changes
+    `import_reminder_history` and its folder stays on disk forever as a
+    read-only archive. The one thing retirement changes
     is its login auto-start — the Startup shortcut is renamed to
     ``*.retired`` (Windows ignores the suffix), which is the whole switch
     and is reversible by renaming it back. Idempotent: an already-retired

@@ -1,6 +1,6 @@
 """Typed read of the scraper's fixed data labels (prep, no live effect).
 
-Evidence: ``A:/scraper/DATA_QUALITY_HANDOFF.md`` §5 (acceptance) + §6.1
+Evidence: the scraper repo's ``DATA_QUALITY_HANDOFF.md`` §5 (acceptance) + §6.1
 (2026-11-04 fix table). The scraper's contamination work changed what its
 ``data_json`` means in four places, and our adapter must read those labels
 literally instead of re-deriving the same facts with different rules:
