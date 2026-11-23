@@ -37,3 +37,8 @@ logs/
 # The owner's live queue is regenerated on demand and lists real vendors with
 # their phone numbers. Untracked 2026-11-21; never stage it again.
 OWNER_REVIEW.md
+
+# This machine's real roots for the OUTREACH_* path settings. Published source
+# names no drive layout; this file is how the local box still finds its inputs
+# (OPERATIONS.md §12, outreach/machine_paths.py). Never commit it.
+src/outreach/machine_paths_local.py

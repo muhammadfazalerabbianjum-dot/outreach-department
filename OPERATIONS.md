@@ -449,14 +449,12 @@ with Database('outreach.db') as db: print(refresh_due(db, datetime.now(timezone.
   (`scheduler._STAGE_BUDGET_S`); it is a measurement, not a cutoff. The refresh pass is the only hard stop.
 - **Consequence of a PC that sleeps through the night:** the refresh waits for the next off-window night.
 
-## 12. Machine paths (the `OUTREACH_*` overrides)
+## 12. Machine paths (the `OUTREACH_*` settings)
 
-The engine's local layout is a **default, not a constant**: five settings read an environment variable first
-and fall back to the layout this lane was tuned on. Nothing here changes behaviour while the variables are
-unset — that is the point: a machine that works keeps working, and a copy of this tree is not welded to one
-disk layout.
+Five settings point outside this repository. Their values belong to the machine, not to the source: the
+published tree names no drive letter, no user directory and no absolute default.
 
-| Variable | What it points at | Read by |
+| Setting | What it points at | Read by |
 |---|---|---|
 | `OUTREACH_SCRAPER_ROOT` | the read-only scraper checkout (its `cache/scraper_cache.db` is the SSOT) | `scraper_adapter`, `intake` |
 | `OUTREACH_LEG_PYTHON` | the interpreter a spawned scraper leg runs under | `intake` |
@@ -464,10 +462,18 @@ disk layout.
 | `OUTREACH_RETIREMENT_STATE` | the retired reminder's `state.json` (read-only archive) | `retirement` |
 | `OUTREACH_LINKEDIN_MOUNT` | the mounted poster sibling — presence check only, never imported | `retirement` |
 
-Set them in the process environment before the engine boots. **Unset = the defaults in source.** Never move a
-path by editing a literal: set the variable, or the next copy of this tree silently inherits this machine's
-drive letters. `OUTREACH_LEG_PYTHON` and `OUTREACH_LEG_LOG_DIR` default to paths *inside*
-`OUTREACH_SCRAPER_ROOT`, so overriding the root moves the whole leg invocation with it.
+`outreach.machine_paths` resolves each name in this order, first hit wins:
+
+1. the environment variable — set it before the engine boots, or in whatever Task/service entry point
+   starts the loop;
+2. `src/outreach/machine_paths_local.py` — **git-ignored**, this machine only, holding the same names, so a
+   working box keeps working with no environment set at all;
+3. nothing: it raises `KeyError` naming the variable. A missing root is a configuration error, never a guess.
+
+**Never put a path in a tracked file.** A literal in source is inherited by every copy of the tree, which is
+how one machine's drive letters end up in a public repository. `OUTREACH_LEG_PYTHON` and
+`OUTREACH_LEG_LOG_DIR` default to paths *inside* `OUTREACH_SCRAPER_ROOT`, so overriding the root moves the
+whole leg invocation with it.
 
 ## 10. When something is unknown
 

@@ -8,17 +8,18 @@ The connection is opened with URI `?mode=ro`: ANY write attempt raises
 from __future__ import annotations
 
 import json
-import os
 import sqlite3
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from outreach import machine_paths
 from outreach.scraper_labels import ScraperSignals, read_signals
 
-#: Default = this machine's layout. Point the adapter at any read-only scraper
-#: checkout with OUTREACH_SCRAPER_ROOT; the cache DB lives inside it.
-SCRAPER_ROOT = Path(os.environ.get("OUTREACH_SCRAPER_ROOT", "A:/scraper"))
+#: The read-only scraper checkout; the cache DB lives inside it. Resolved from
+#: OUTREACH_SCRAPER_ROOT (environment, then the git-ignored local file) — this
+#: tree names no drive layout; see OPERATIONS.md §12.
+SCRAPER_ROOT = Path(machine_paths.get("OUTREACH_SCRAPER_ROOT"))
 SCRAPER_DB = SCRAPER_ROOT / "cache" / "scraper_cache.db"
 
 SCRAPER_COLUMNS: tuple[str, ...] = (

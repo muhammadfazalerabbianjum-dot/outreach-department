@@ -24,19 +24,17 @@ import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from outreach import machine_paths
 from outreach.store import get_config, set_config
 
 if TYPE_CHECKING:
     from outreach.store import Database
 
-# Defaults = this machine's layout. Both are overridable so a fork can point
-# the retirement glue at its own archive and mount without an edit.
-RETIREMENT_STATE = Path(
-    os.environ.get("OUTREACH_RETIREMENT_STATE", r"A:\outreach\state.json")
-)
-LINKEDIN_MOUNT = os.environ.get(
-    "OUTREACH_LINKEDIN_MOUNT", r"A:\AI Stuff\automation"
-)
+# Both come from OUTREACH_* (environment, then the git-ignored local file), so a
+# fork points the retirement glue at its own archive and mount without an edit
+# and this tree names no drive layout; see OPERATIONS.md §12.
+RETIREMENT_STATE = Path(machine_paths.get("OUTREACH_RETIREMENT_STATE"))
+LINKEDIN_MOUNT = machine_paths.get("OUTREACH_LINKEDIN_MOUNT")
 _STARTUP_NAME = "outreach_engine_startup.cmd"
 # R4 (2026-11-13): the launcher is DEFINED HERE, in source control, and the
 # Startup-folder file is a rendered copy of it. Two changes from the B17 form:

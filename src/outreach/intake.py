@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from outreach import machine_paths
 from outreach.cleaning import repair_instagram, resolve_regions, to_e164
 from outreach.dishes import extract_dishes
 from outreach.icp import qualify_new_leads
@@ -142,10 +143,11 @@ def intake_run(
 
 # D10 invocation, region-matched; only ever spawned when the owner flips
 # `auto_restart_leg` (default FALSE -> alert-only). cwd = the scraper repo.
-# Paths default to this machine's layout; override them with the OUTREACH_*
-# variables below, never by editing this file.
-_LEG_CWD = os.environ.get("OUTREACH_SCRAPER_ROOT", "A:/scraper")
-_LEG_PYTHON = os.environ.get(
+# Resolved from the OUTREACH_* variables (environment, then the git-ignored
+# machine_paths_local.py) — this tree names no drive layout; see OPERATIONS.md
+# §12. Python and logs sit INSIDE the root, so one override moves all three.
+_LEG_CWD = machine_paths.get("OUTREACH_SCRAPER_ROOT")
+_LEG_PYTHON = machine_paths.get(
     "OUTREACH_LEG_PYTHON", f"{_LEG_CWD}/venv/Scripts/python.exe"
 )
 LEG_COMMANDS: dict[str, tuple[str, ...]] = {
@@ -155,7 +157,7 @@ LEG_COMMANDS: dict[str, tuple[str, ...]] = {
         "--config", "config_legs/leg_salalah.yaml", "--auto",
     ),
 }
-_LEG_LOG_DIR = os.environ.get("OUTREACH_LEG_LOG_DIR", f"{_LEG_CWD}/logs")
+_LEG_LOG_DIR = machine_paths.get("OUTREACH_LEG_LOG_DIR", f"{_LEG_CWD}/logs")
 
 
 def _spawn_leg(command: list[str], *, cwd: str | None = None) -> str:
